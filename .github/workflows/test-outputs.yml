@@ -1,4 +1,4 @@
-name: Test Outputs
+ name: Test Outputs
 
 on:
   push:
@@ -26,4 +26,28 @@ jobs:
       - name: Get color
         env:
           SELECTED_COLOR: ${{ steps.color-selector-dash.outputs['-SELECTED_COLOR'] }}
+        run: echo "The selected color is $SELECTED_COLOR"
+
+      - name: Set color
+        id: color-selector-at
+        run: echo "@SELECTED_COLOR=red" >> "$GITHUB_OUTPUT"
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector-at.outputs['@SELECTED_COLOR'] }}
+        run: echo "The selected color is $SELECTED_COLOR"
+
+      - name: Set color
+        id: color-selector-slash
+        run: echo "SELECTED_COLOR/boop=blue" >> "$GITHUB_OUTPUT"
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector-slash.outputs['SELECTED_COLOR/boop'] }}
+        run: echo "The selected color is $SELECTED_COLOR"
+
+      - name: Set color
+        id: color-selector-all
+        run: echo "@SELECTED_COLOR/boop=black" >> "$GITHUB_OUTPUT"
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector-all.outputs['@SELECTED_COLOR/boop'] }}
         run: echo "The selected color is $SELECTED_COLOR"
